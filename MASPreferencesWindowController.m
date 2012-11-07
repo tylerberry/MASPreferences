@@ -238,8 +238,20 @@ static NSString *const PreferencesKeyForViewBounds (NSString *identifier)
     NSString *minViewRectString = [_minimumViewRects objectForKey:controller.identifier];
     if (!minViewRectString)
         [_minimumViewRects setObject:NSStringFromRect(controllerView.bounds) forKey:controller.identifier];
-    BOOL sizableWidth  = [controllerView autoresizingMask] & NSViewWidthSizable;
-    BOOL sizableHeight = [controllerView autoresizingMask] & NSViewHeightSizable;
+  
+    BOOL sizableWidth;
+    BOOL sizableHeight;
+  
+    if([controller respondsToSelector:@selector(resizableWidth)])
+        sizableWidth = controller.resizableWidth;
+    else
+        sizableWidth = [controllerView autoresizingMask] & NSViewWidthSizable;
+  
+    if([controller respondsToSelector:@selector(resizableHeight)])
+       sizableHeight = controller.resizableHeight;
+    else
+       sizableHeight = [controllerView autoresizingMask] & NSViewHeightSizable;
+
     NSRect oldViewRect = oldViewRectString ? NSRectFromString(oldViewRectString) : controllerView.bounds;
     NSRect minViewRect = minViewRectString ? NSRectFromString(minViewRectString) : controllerView.bounds;
     oldViewRect.size.width  = NSWidth(oldViewRect)  < NSWidth(minViewRect)  || !sizableWidth  ? NSWidth(minViewRect)  : NSWidth(oldViewRect);

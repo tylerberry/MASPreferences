@@ -10,6 +10,9 @@
 - (void)viewDidDisappear;
 - (NSView*)initialKeyView;
 
+@property (nonatomic, readonly) BOOL resizableWidth;
+@property (nonatomic, readonly) BOOL resizableHeight;
+
 @required
 
 @property (nonatomic, readonly) NSString *identifier;
